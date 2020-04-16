@@ -1,0 +1,15 @@
+{
+    "plugins": [
+        "expandable-chapters",
+        "splitter",
+        "anchor-navigation-ex",
+        "katex",
+        "code"
+    ],
+    "pluginsConfig": {
+        "anchor-navigation-ex": {
+            "showLevel": false,
+            "showGoTop": true
+        }
+    }
+}
