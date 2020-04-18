@@ -14,6 +14,7 @@
 * [MyBatis](MyBatis/README.md)
 * [数据库相关](Databases/README.md)
     * [基础理论](Databases/FundamentalTheories/README.md)
+        * [事务](Databases/FundamentalTheories/Transactions.md)
     * [MySQL](Databases/MySQL/README.md)
     * [Redis](Databases/Redis/README.md)
         * [数据类型与数据过期](Databases/Redis/DataTypesAndExpiration.md)
@@ -28,3 +29,4 @@
     * [多处理器编程的艺术](ReadingNotes/TheArtOfMultiprocessorProgramming/README.md)
         * [Amdahl定律](ReadingNotes/TheArtOfMultiprocessorProgramming/Amdahl'sLaw.md)
         * [自旋锁](ReadingNotes/TheArtOfMultiprocessorProgramming/SpinLock.md)
+    * [从Paxos到ZooKeeper：分布式一致性原理与实战](ReadingNotes/FromPaxosToZooKeeper/README.md)
