@@ -24,6 +24,8 @@
 * [计算机网络](ComputerNetworks/README.md)
     * [网络基础](ComputerNetworks/Fundamentals/README.md)
         * [延迟与带宽](ComputerNetworks/Fundamentals/LatencyAndBandwidth.md)
+        * [路由算法](ComputerNetworks/Fundamentals/RoutingAlgorithms.md)
+        * [IP地址与IP寻址](ComputerNetworks/Fundamentals/IpAddressing.md)
     * [网络协议](ComputerNetworks/Protocols/README.md)
 * [操作系统](OperatingSystems/README.md)
 * [NiFi](NiFi/README.md)
