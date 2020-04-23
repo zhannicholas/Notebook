@@ -20,7 +20,7 @@
         * [事务](Databases/FundamentalTheories/Transactions.md)
     * [MySQL](Databases/MySQL/README.md)
     * [Redis](Databases/Redis/README.md)
-        * [数据类型与数据过期](Databases/Redis/DataTypesAndExpiration.md)
+        * [Redis数据结构](Databases/Redis/RedisDataStructures.md)
 * [分布式计算](DistributedComputation/README.md)
     * [ZooKeeper](DistributedComputation/ZooKeeper/README.md)
         * [安装ZooKeeper](DistributedComputation/ZooKeeper/Installation.md)
