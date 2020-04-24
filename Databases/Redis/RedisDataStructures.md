@@ -336,28 +336,66 @@ Redis中的有序集合(`sorted set`)和集合(`set`)类似，存放不重复的
 有序集合还支持很多的命令，比如：**`ZPOPMAX`**、**`ZRANGEBYLEX`**、**`ZUNIONSTORE`**等等。
 
 ### Bitmaps
-严格地说，`Bitmap`并不是一种新的数据类型，而是基于`string`的一种数据类型，它提供了一些基于比特位的操作。
+严格地说，`Bitmap`并不是一种新的数据类型，而是基于`string`的一种数据类型，它提供了一些基于比特位的操作。由于当前Redis中的`string`最大支持到`512MB`，因此位操作能够使用的比特位数最大为$$2^{32}$$，约为`4.295`亿。
 
-相关的命令分为两种：操作单个比特位的和操作一组比特位的。
+#### Bit fields
+`Bit field`是一种数据结构，它把数据以比特位为单元进行存储，并允许对单个比特位或一组比特位进行操作。
 
-比特位的设置和检索使用的是 **`BITSET`** 和 **`BITGET`** 命令:
+**`BITFIELD`**会将`string`作为位数组对待，支持一次操作一个或多个位。可以理解为：我们可以在`string`上操作一个或多个可变长度的整数。其完整语法如下，包括三个子命令和三种溢出策略：
+**`BITFIELD key [GET type offset] [SET type offset value] [INCRBY type offset increment] [OVERFLOW WRAP|SAT|FAIL]`**
+
+这里的`type`必须是整数类型，它由两部分组成：`符号前缀`+`整数的宽度`。`前缀`由分为两种：`i`表示有符号(`signed`)整数，而`u`表示无符号(`unsigned`)整数。例如：`u8`表示宽度为8位的无符号整数，而`i5`表示宽度为5位的有符号整数。<u>对于无符号整数，最大支持到64位，而对于有符号整数，最大支持到63位</u>。
+
+`offset`有两种形式：
+* 不带前缀`#`，采用从`0`开始的`offset`去确定`bit field`的位置
+* 带前缀`#`，采用`整数的宽度`乘以`offset`去确定`bit field`的位置
+
+![offset](images/bitfield-offset.png)
+
+例如：
 ```Redis
->> setbit bits 2 1
-0
->> getbit bits 2
-1
->> getbit bits 1
-0
+>> bitfield myfield set u8 0 42
+1) (integer) 0
+>> bitfield myfield get u8 0
+1) (integer) 42
+>> type myfield
+string
+>> object encoding myfield
+"raw"
+>> bitfield myfield set u8 #1 10
+1) (integer) 0
+>> bitfield myfield get u8 #1 get u8 8
+1) (integer) 10
+2) (integer) 10
+>> get myfield
+"*\n"           // 在ASCII表中，42表示'*'，而10表示'\n'。
 ```
 
-**`BITSET`**给指定比特位设置值，然后返回该位置上**原来的值**，企图使用 **`BITSET`** 设置`0`和`1`以外的值会导致错误。 **`BITGET`** 获取指定位置的值， 如果给定的位置超出了存储用的字符串的长度，将会返回`0`。
+**`BITFIELD`**支持的三个子命令分别为：
+* **`GET <type> <offset>`**：返回给定的`bit field`
+* **`SET <type> <offset> <value>`**：设置`bit field`的值并返回其上的旧值
+* **`INCRBY <type> <offset> <increment>`**：在给定的`bit field`上执行增减操作，并返回新值
 
+对于 **`INCRBY`**子命令，还可以指定溢出策略，有三种可选的溢出策略：
+* **WRAP**：`wrap around`，回绕。例如，对于`i8`类型的`127`，加一会得到`-128`，而对于`u7`类型的`128`，加一会得到`0`
+* **SAT**：`saturation arithmetic`，饱和计算。例如，例如，对于`i8`类型的`127`，加一依然是`128`
+* **FAIL**：当发生溢出时，不采取任何运算，而是返回`NULL`
+**WRAP**是默认的溢出策略。
 
-操作一组比特位的命令分为三种：
-
-  * **`BITOP`** 进行字符串之间的按位与、按位或、按位异或以及按位取反操作。
-  * **`BITCOUNT`** 进行计数操作，返回设置为`1`的比特位的个数。
-  * **`BITPOS`** 寻找给定的`0`或`1`出现的第一个位置。
+#### Bit arrays
+**`SETBIT key offset value`**给指定比特位设置值，然后返回该位置上**原来的值**，如果`key`不存在，则会先创建一个新的`string`，这个`string`会自动扩容以保证`offset`的有效性。企图使用 **`SETBIT`**设置`0`和`1`以外的值会导致错误。 **`GETBIT key offset`**获取`offset`位置的值，若给定`offset`超出了当前`string`的长度或`key`不存在，Redis都会返回`0`。例如：
+```Redis
+>> setbit bits 2 1
+(integer) 0
+>> getbit bits 2
+(integer) 1
+>> getbit bits 1
+(integer) 0
+```
+有三种命令可以操作一组比特位：
+* **`BITOP operation destkey key [key ...]`**：进行字符串之间的按位与(`AND`)、按位或(`OR`)、按位异或(`XOR`)以及按位取反(`NOT`)操作
+* **`BITCOUNT key [start end]`**：进行计数操作，返回设置为`1`的比特位的个数
+* **`BITPOS key bit [start end]`**：寻找给定`bit`(`0`或`1`)出现的第一个位置
 
 ### HyperLogLogs
 Redis使用`HyperLogLog`进行计数，这个算法是基于统计的。Redis的实现中，标准误差只有1%，并且在最坏的情况下只需要消耗 **12KB** 的内存。`HyperLogLog`在技术上是一种不同的数据结构，但也是基于`string`实现的。
@@ -366,19 +404,19 @@ Redis使用`HyperLogLog`进行计数，这个算法是基于统计的。Redis的
 
 ```
 >> pfadd hll a b c d    // 向hll中加入四个元素
-1
+(integer) 1
 >> type hll             // 查看hll类型
 string                  // HyperLogLog实际为string
 >> pfcount hll          // 对hll进行计数
-4
+(integer) 4
 >> pfadd hll1 a b c d
-1
+(integer) 1
 >> pfadd hll2 c d e f
-1
+(integer) 1
 >> pfmerge hll3 hll1 hll2 // 合并hll1和hll2到hll3
 OK
 >> pfcount hll3
-6
+(integer) 6
 ```
 
 ### Geospatial indexes
@@ -387,36 +425,26 @@ Redis在3.2.0版本中加入了地理空间(`geospatial`)这一数据类型，�
 下面是一些例子：
 ```
 >> geoadd municipalities 116.4551113869 39.6733986505 beijing 121.6406041505 30.8267595167 shanghai 106.6992091675 29.3055601981 chongqing  // 添加3个地理空间数据
-3
+(integer) 3
 >> geodist municipalities beijing chongqing             // 查看beijing和chongqing直接的距离(单位为米)
-1457336.8906
+"1457336.8906"
 >> georadius municipalities 116 40 1000 km              // 查看以经度116、纬度40为中心，1000km为半径内的所有位置
-[
-  "beijing"
-]
+1) "beijing"
 >> geohash municipalities beijing shanghai              // 查看beijing和chongqing的Geohash表示
-[
-  "wx4cdn242c0",
-  "wtqrrgzfzs0"
-]
+[1) "wx4cdn242c0"
+2) "wtqrrgzfzs0"
 >> geopos municipalities chongqing                      // 查看chongqing的地理空间数据
-[
-  [
-    "106.69921070337295532",
-    "29.30556015923176716"
-  ]
-]
+1) 1) "106.69921070337295532"
+   2) "29.30556015923176716"
 >> georadiusbymember municipalities chongqing 1500 km   // 查看以chongqing为中心、1500km为半径内的所有位置
-[
-  "chongqing",
-  "shanghai",
-  "beijing"
-]
-
+1) "chongqing"
+2) "shanghai"
+3) "beijing"
 ```
 
 ### Streams
 `Stream`是Redis 5.0中新增加的数据类型，它以更加抽象的方式模拟了日志结构，通常实现为一个仅以追加模式打开的文件。`stream`涉及到的内容比较多，后面会详细了解。这里先跳过。
 
 ## 参考文献
-1. [redis.io](https://redis.io).
+1. [An introduction to Redis data types and abstractions](https://redis.io/topics/data-types-intro).
+2. [Bit field](https://en.wikipedia.org/wiki/Bit_field).
