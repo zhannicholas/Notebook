@@ -38,34 +38,34 @@ Redis中也有数据库(`database`)的概念，只是是以命名空间(`namespa
 
 下面是一些例子：
 ```
->> set s1 v1 
+> set s1 v1 
 OK
->> expire s1 10      // 设置s1于10秒后过期
+> expire s1 10      // 设置s1于10秒后过期
 1
->> ttl s1           // 查看s1的剩余生存时间(单位为秒)
+> ttl s1           // 查看s1的剩余生存时间(单位为秒)
 7
->> pttl s1          // 查看s1的剩余生存时间(单位为毫秒)
+> pttl s1          // 查看s1的剩余生存时间(单位为毫秒)
 3042
->> get s1           // 查看s1的值，未经过10秒
+> get s1           // 查看s1的值，未经过10秒
 "v1"
->> get s1           // 查看s1的值，超过10秒，s1已被删除
+> get s1           // 查看s1的值，超过10秒，s1已被删除
 (nil)
->> set s2 v2 ex 10  // 在设置值的同时指定过期时间为10秒
+> set s2 v2 ex 10  // 在设置值的同时指定过期时间为10秒
 OK
->> set s3 v3 px 10000 // 在设置值的同时指定过期时间为10000毫秒
+> set s3 v3 px 10000 // 在设置值的同时指定过期时间为10000毫秒
 OK
 ```
 
 ## 数据类型
 Redis支持多种数据结构(类型)。我们可以使用 **`TYPE key`**命令来查看`key`对应的数据类型，例如：
 ```Redis
->> set key1 1
+> set key1 1
 OK
->> rpush key2 a
+> rpush key2 a
 1
->> type key1
+> type key1
 string
->> type key2
+> type key2
 list
 ```
 **`OBJECT subcommand [arguments [arguments ...]]`**允许我们查看某个键对应的Redis对象的内部信息。支持的`subcommand`有：
@@ -86,13 +86,13 @@ Redis中的对象在Redis内部可以被存储为多种形式：
 
 下面的例子展示了如何查看数据的编码格式：
 ```Redis
->> set foo 1
+> set foo 1
 OK
->> object encoding foo
+> object encoding foo
 "int"
->> append foo a
+> append foo a
 (integer) 2
->> object encoding foo
+> object encoding foo
 "raw" 
 ```
 
@@ -101,27 +101,27 @@ OK
 
 Redis提供了20多个操作`string`类型的命令。下面是一些例子：
 ```Redis
->> set s1 "Hello, Redis"    // 设置s1的值为"Hello, Redis"
+> set s1 "Hello, Redis"    // 设置s1的值为"Hello, Redis"
 OK                          // 成功返回OK
->> get s1                   // 获取值
+> get s1                   // 获取值
 "Hello, Redis"
->> setnx s1 "Redis"         // 尝试为s1设置新值
+> setnx s1 "Redis"         // 尝试为s1设置新值
 (integer) 0                 // s1已有值，不进行操作，返回0
->> set s1 2                 // 设置值
+> set s1 2                 // 设置值
 OK
->> get s1                   
+> get s1                   
 "2"
->> incr s1                  // 加1
+> incr s1                  // 加1
 (integer) 3
->> incrby s1 10             // 加10
+> incrby s1 10             // 加10
 (integer) 13
->> decr s1                  // 减1
+> decr s1                  // 减1
 (integer) 12
->> decrby s1 5              // 减5
+> decrby s1 5              // 减5
 (integer) 7
->> incrbyfloat s1 1.1       // 加1.1
+> incrbyfloat s1 1.1       // 加1.1
 "8.09999999999999964"
->> incrbyfloat s1 -3.1      // 减3.1
+> incrbyfloat s1 -3.1      // 减3.1
 "5"
 ```
 **`SET`** 和 **`GET`** 分别用来设置和检索key对应的值(这个值是一个**字符串**)。需要注意的是，如果某个key已经有对应的值，**`SET`** 命令会覆盖掉已有的值(不管之前的值是何种类型都会被覆盖)，和这个key关联的`TTL`也会被丢弃。如果不希望已有key的值被覆盖，可以使用 **`SETNX`** 命令，当key存在时，**`SETNX`** 不会进行任何操作。
@@ -130,9 +130,9 @@ OK
 
 有时候，一次性设置或获取多个值是很有意义的，这可以通过 **`MSET key value [key value ...]`** 和 **`MGET key [key ...]`** 命令实现。类似的还有 **`MSETNX`** 命令。下面是一个例子：
 ```Redis
->> mset s1 1 s2 2 s3 a
+> mset s1 1 s2 2 s3 a
 OK
->> mget s1 s2 s3
+> mget s1 s2 s3
 1) "1"
 2) "2"
 3) "a"
@@ -143,43 +143,43 @@ OK
 
 Redis提供了10多个操作`list`的命令，下面是一些例子：
 ```Redis
->> lpush list1 a 1 b    // 向列表list1的头部依次插入a、1、b这三个元素
+> lpush list1 a 1 b    // 向列表list1的头部依次插入a、1、b这三个元素
 (integer) 3             // 成功插入，当前列表list1含有3个元素
->> lrange list1 0 -1    // 查看list1中的所有元素
+> lrange list1 0 -1    // 查看list1中的所有元素
 1) "b"
 2) "1"
 3) "a"
->> llen list1           // 获取list1的长度
+> llen list1           // 获取list1的长度
 (integer) 3
->> rpush list1 c d      // 向列表list1尾部依次插入c、d这两个元素
+> rpush list1 c d      // 向列表list1尾部依次插入c、d这两个元素
 (integer) 5             // 插入成功，当前列表list1含有5个元素
->> lrange list1 0 -1
+> lrange list1 0 -1
 1) "b"
 2) "1"
 3) "a"
 4) "c"
 5) "d"
->> lpop list1           // 移除并返回列表list1中的第一个元素
+> lpop list1           // 移除并返回列表list1中的第一个元素
 "b"
->> rpop list1           // 移除并返回列表list2中的最后一个元素
+> rpop list1           // 移除并返回列表list2中的最后一个元素
 "d"
->> lrange list2 0 -1    // 列表list2是空的
+> lrange list2 0 -1    // 列表list2是空的
 (empty list or set)
->> lpop list2           // 从一个空的列表里面移除元素会返回NULL
+> lpop list2           // 从一个空的列表里面移除元素会返回NULL
 (nil)
->> rpop list2
+> rpop list2
 (nil)
->> lrange list1 0 -1
+> lrange list1 0 -1
 1) "1"
 2) "a"
 3) "c"
->> lindex list1 0      // 查看列表list1中处于位置0处的元素
+> lindex list1 0      // 查看列表list1中处于位置0处的元素
 1
->> lindex list1 -1     // 查看列表list1中最后一个元素
+> lindex list1 -1     // 查看列表list1中最后一个元素
 "c"
->> ltrim list1 1 2     // 修剪列表list1，只保留位于区间[1,2]中的元素
+> ltrim list1 1 2     // 修剪列表list1，只保留位于区间[1,2]中的元素
 OK
->> lrange list1 0 -1   // 查看list1中所有元素
+> lrange list1 0 -1   // 查看list1中所有元素
 1) "a"
 2) "c"
 ```
@@ -191,12 +191,12 @@ OK
 
 有时候，我们希望只有当列表中有元素时，才执行POP操作，这时候可以使用 **`BLPOP key [key ...] timeout`** 和 **`BRPOP key [key ...] timeout`** 。两个命令的都是从列表中移除元素，只是方向不一样。以 **`BLPOP`** 为例，它接收一个或多个`key`以及一个超时时间`timeout`(可阻塞时间，单位为秒，0代表一直阻塞)。在这些`key`中，如果有key对应的列表不为空，将会返回第一个非空列表的key及POP出的值。举个例子：
 ```Redis
->> lrange list1 0 -1  // 列表list1包含两个元素
+> lrange list1 0 -1  // 列表list1包含两个元素
 1) "a"
 2) "c"
->> lrange list2 0 -1  // 列表list2为空
+> lrange list2 0 -1  // 列表list2为空
 (empty list or set)
->> blpop list2 list1 0  // list1中的第一个元素被移除
+> blpop list2 list1 0  // list1中的第一个元素被移除
 1) "list1"
 2) "a"
 ```
@@ -210,33 +210,33 @@ Redis中的哈希表(`hash`)是一个字符串类型的field-value映射表，�
 
 下面是一些例子：
 ```Redis
->> hset user:1 name Tome  // 将哈希表user:1的name字段的值设置为Tome
+> hset user:1 name Tome  // 将哈希表user:1的name字段的值设置为Tome
 (integer) 1
->> hget user:1 name       // 获取哈希表user:1中name字段对应的值
+> hget user:1 name       // 获取哈希表user:1中name字段对应的值
 "Tome"
->> hmset user:2 name Bob age 20 education barchelor // 一次向哈希表user:2中插入多个filed-value
+> hmset user:2 name Bob age 20 education barchelor // 一次向哈希表user:2中插入多个filed-value
 OK
->> hmget user:2 name age  // 获取哈希表user:2中name和age字段对应的值
+> hmget user:2 name age  // 获取哈希表user:2中name和age字段对应的值
 1) "Bob"
 2) "20"
->> hgetall user:2         // 获取哈希表user:2中所有字段和值
+> hgetall user:2         // 获取哈希表user:2中所有字段和值
 1) "name"
 2) "Bob"
 3) "age"
 4) "20"
 5) "education"
 6) "barchelor"
->> hget user:1 age        // 企图获取一个不存在的字段对应的值，会返回NULL
+> hget user:1 age        // 企图获取一个不存在的字段对应的值，会返回NULL
 (nil)
->> hexists user:1 age     // 检查哈希表user:1中是否存在字段age
+> hexists user:1 age     // 检查哈希表user:1中是否存在字段age
 (integer) 0
->> hvals user:2           // 返回哈希表user:2中所有的值
+> hvals user:2           // 返回哈希表user:2中所有的值
 1) "Bob"
 2) "20"
 3) "barchelor"
->> hincrby user:2 age 2  // 将哈希表user:2的age字段对应的值加2
+> hincrby user:2 age 2  // 将哈希表user:2的age字段对应的值加2
 (integer) 22
->> hget user:2 age
+> hget user:2 age
 "22"
 ```
 
@@ -245,57 +245,57 @@ Redis中的集合(`set`)是一个由<u>字符串</u>构成的无序集合，集�
 
 下面是基本操作的一些例子：
 ```Redis
->> sadd colors red blue white black // 向集合colors中插入4个元素
+> sadd colors red blue white black // 向集合colors中插入4个元素
 (integer) 4
->> smembers colors                  // 查看集合colors内容
+> smembers colors                  // 查看集合colors内容
 1) "blue"
 2) "white"
 3) "red"
 4) "black"
->> sismember colors yellow        // 检查yellow是否在colors中
+> sismember colors yellow        // 检查yellow是否在colors中
 (integer) 0                       // 集合colors不包含yellow
->> scard colors                   // 查看集合colors的基数(元素个数)
+> scard colors                   // 查看集合colors的基数(元素个数)
 (integer) 4
->> spop colors                    // 随机从集合colors中移除一个元素
+> spop colors                    // 随机从集合colors中移除一个元素
 "black"
->> srem set1 black                // 从集合colors中删除一个不存在的元素
+> srem set1 black                // 从集合colors中删除一个不存在的元素
 (integer) 0
->> srem colors white              // 从集合colors中删除一个存在的元素
+> srem colors white              // 从集合colors中删除一个存在的元素
 (integer) 1
->> smembers colors
+> smembers colors
 1) "blue"
 2) "red"
 ```
 
 下面是集合运算：
 ```Redis
->> sadd set2 a b c red blue gold
+> sadd set2 a b c red blue gold
 (integer) 6
->> smembers set2
+> smembers set2
 1) "c"
 2) "a"
 3) "gold"
 4) "b"
 5) "red"
 6) "blue"
->> sunion colors set2   // colors ∩ set2
+> sunion colors set2   // colors ∩ set2
 1) "gold"
 2) "red"
 3) "b"
 4) "a"
 5) "blue"
 6) "c"
->> sinter colors set2   // colors ∪ set2
+> sinter colors set2   // colors ∪ set2
 1) "blue"
 2) "red"
->> sdiff set2 colors   // set - colors
+> sdiff set2 colors   // set - colors
 1) "gold"
 2) "b"
 3) "c"
 4) "a"
->> sadd set3 f
+> sadd set3 f
 (integer) 1
->> sdiff set2 colors set3   // set2 - colors - set3
+> sdiff set2 colors set3   // set2 - colors - set3
 1) "gold"
 2) "b"
 3) "c"
@@ -311,26 +311,26 @@ Redis中的有序集合(`sorted set`)和集合(`set`)类似，存放不重复的
 
 下面是一些例子：
 ```Redis
->> zadd z1 2 a -1 b               // 向有序集合z1中添加a(score=2)和b(score=-1)， ZADD还可以用来更新元素对应的分数
+> zadd z1 2 a -1 b               // 向有序集合z1中添加a(score=2)和b(score=-1)， ZADD还可以用来更新元素对应的分数
 (integer) 2
->> zrange z1 0 -1                 // 查看z1内容(正序)，因为b.score < a.score，所以b在前面
+> zrange z1 0 -1                 // 查看z1内容(正序)，因为b.score < a.score，所以b在前面
 1) "b"
 2) "a"
->> zrange z1 0 -1 withscores      // 查看z1内容及对应分数
+> zrange z1 0 -1 withscores      // 查看z1内容及对应分数
 1) "b"
 2) "-1"
 3) "a"
 4) "2"
->> zrevrange z1 0 -1              // 查看z1内容(逆序)
+> zrevrange z1 0 -1              // 查看z1内容(逆序)
 1) "a"
 2) "b"
->> zrangebyscore z1 0 inf         // 查看z1中分数在[0, inf)内的内容
+> zrangebyscore z1 0 inf         // 查看z1中分数在[0, inf)内的内容
 1) "a"
->> zrank z1 b                     // 查看z1中内容b的排名
+> zrank z1 b                     // 查看z1中内容b的排名
 (integer) 0
->> zremrangebyscore z1 -inf -1    // 移除z1中分数位于(-inf,1]的所有元素
+> zremrangebyscore z1 -inf -1    // 移除z1中分数位于(-inf,1]的所有元素
 (integer) 1
->> zrange z1 0 -1
+> zrange z1 0 -1
 1) "a"
 ```
 有序集合还支持很多的命令，比如：**`ZPOPMAX`**、**`ZRANGEBYLEX`**、**`ZUNIONSTORE`**等等。
@@ -354,20 +354,20 @@ Redis中的有序集合(`sorted set`)和集合(`set`)类似，存放不重复的
 
 例如：
 ```Redis
->> bitfield myfield set u8 0 42
+> bitfield myfield set u8 0 42
 1) (integer) 0
->> bitfield myfield get u8 0
+> bitfield myfield get u8 0
 1) (integer) 42
->> type myfield
+> type myfield
 string
->> object encoding myfield
+> object encoding myfield
 "raw"
->> bitfield myfield set u8 #1 10
+> bitfield myfield set u8 #1 10
 1) (integer) 0
->> bitfield myfield get u8 #1 get u8 8
+> bitfield myfield get u8 #1 get u8 8
 1) (integer) 10
 2) (integer) 10
->> get myfield
+> get myfield
 "*\n"           // 在ASCII表中，42表示'*'，而10表示'\n'。
 ```
 
@@ -385,11 +385,11 @@ string
 #### Bit arrays
 **`SETBIT key offset value`**给指定比特位设置值，然后返回该位置上**原来的值**，如果`key`不存在，则会先创建一个新的`string`，这个`string`会自动扩容以保证`offset`的有效性。企图使用 **`SETBIT`**设置`0`和`1`以外的值会导致错误。 **`GETBIT key offset`**获取`offset`位置的值，若给定`offset`超出了当前`string`的长度或`key`不存在，Redis都会返回`0`。例如：
 ```Redis
->> setbit bits 2 1
+> setbit bits 2 1
 (integer) 0
->> getbit bits 2
+> getbit bits 2
 (integer) 1
->> getbit bits 1
+> getbit bits 1
 (integer) 0
 ```
 有三种命令可以操作一组比特位：
@@ -403,19 +403,19 @@ Redis使用`HyperLogLog`进行计数，这个算法是基于统计的。Redis的
 我们使用 **`SADD`** 向集合中添加元素，类似的，我们也可以使用 **`PFADD`** 向`HyperLogLog`中添加元素。实际上，`HyperLogLog`并不存储我们添加的元素，只是更新内部状态。
 
 ```
->> pfadd hll a b c d    // 向hll中加入四个元素
+> pfadd hll a b c d    // 向hll中加入四个元素
 (integer) 1
->> type hll             // 查看hll类型
+> type hll             // 查看hll类型
 string                  // HyperLogLog实际为string
->> pfcount hll          // 对hll进行计数
+> pfcount hll          // 对hll进行计数
 (integer) 4
->> pfadd hll1 a b c d
+> pfadd hll1 a b c d
 (integer) 1
->> pfadd hll2 c d e f
+> pfadd hll2 c d e f
 (integer) 1
->> pfmerge hll3 hll1 hll2 // 合并hll1和hll2到hll3
+> pfmerge hll3 hll1 hll2 // 合并hll1和hll2到hll3
 OK
->> pfcount hll3
+> pfcount hll3
 (integer) 6
 ```
 
@@ -424,19 +424,19 @@ Redis在3.2.0版本中加入了地理空间(`geospatial`)这一数据类型，�
 
 下面是一些例子：
 ```
->> geoadd municipalities 116.4551113869 39.6733986505 beijing 121.6406041505 30.8267595167 shanghai 106.6992091675 29.3055601981 chongqing  // 添加3个地理空间数据
+> geoadd municipalities 116.4551113869 39.6733986505 beijing 121.6406041505 30.8267595167 shanghai 106.6992091675 29.3055601981 chongqing  // 添加3个地理空间数据
 (integer) 3
->> geodist municipalities beijing chongqing             // 查看beijing和chongqing直接的距离(单位为米)
+> geodist municipalities beijing chongqing             // 查看beijing和chongqing直接的距离(单位为米)
 "1457336.8906"
->> georadius municipalities 116 40 1000 km              // 查看以经度116、纬度40为中心，1000km为半径内的所有位置
+> georadius municipalities 116 40 1000 km              // 查看以经度116、纬度40为中心，1000km为半径内的所有位置
 1) "beijing"
->> geohash municipalities beijing shanghai              // 查看beijing和chongqing的Geohash表示
+> geohash municipalities beijing shanghai              // 查看beijing和chongqing的Geohash表示
 [1) "wx4cdn242c0"
 2) "wtqrrgzfzs0"
->> geopos municipalities chongqing                      // 查看chongqing的地理空间数据
+> geopos municipalities chongqing                      // 查看chongqing的地理空间数据
 1) 1) "106.69921070337295532"
    2) "29.30556015923176716"
->> georadiusbymember municipalities chongqing 1500 km   // 查看以chongqing为中心、1500km为半径内的所有位置
+> georadiusbymember municipalities chongqing 1500 km   // 查看以chongqing为中心、1500km为半径内的所有位置
 1) "chongqing"
 2) "shanghai"
 3) "beijing"

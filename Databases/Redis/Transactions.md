@@ -8,18 +8,18 @@ Redis中提供了5个和事务相关的命令：**`MULTI`**、**`EXEC`**、**`DI
 
 下面是一个例子，从`acount:B`划`20`到`acount:A`的这个操作是原子的：
 ```Redis
->> mset account:A 100 account:B 200
+> mset account:A 100 account:B 200
 OK
->> multi
+> multi
 OK
->> decrby account:B 20
+> decrby account:B 20
 QUEUED
->> incrby account:A 20
+> incrby account:A 20
 QUEUED
->> exec
+> exec
 1) (integer) 180
 2) (integer) 120
->> mget account:A account:B
+> mget account:A account:B
 1) "120"
 2) "180"
 ```
@@ -32,28 +32,28 @@ QUEUED
 
 对于第一种情况，当前事务会被标记为**无效**状态，错误的命令并不会入队，其后的命令会继续入队，但当调用 **`EXEC`**时，并不会开启事务，而是会异常中止。当`xx`命令由于语法错误而入队失败，事务处于无效状态，调用 **`EXEC`**并不会开启事务，而是直接终止，**`INCR account:B`**也没有执行：
 ```Redis
->> multi
+> multi
 OK
->> xx
+> xx
 (error) ERR unknown command `xx`, with args beginning with:
->> incr account:B
+> incr account:B
 QUEUED
->>exec
+>exec
 (error) EXECABORT Transaction discarded because of previous errors.
 ```
 
 对于第二种情况，**当某个命令执行失败时，Redis会继续执行后续命令，因为Redis不支持回滚**。继续以`account:A`和`account:B`举例，我们先在`string`上执行 **`LPOP`**命令，命令本身没有语法错误，因此入队成功，开启事务后，`lpop account:A`执行失败，而后续命令正常执行：
 ```Redis
->> multi
+> multi
 OK
->> lpop account:A
+> lpop account:A
 QUEUED
->> incr account:B
+> incr account:B
 QUEUED
->> exec
+> exec
 1) (error) WRONGTYPE Operation against a key holding the wrong kind of value
 2) (integer) 181
->> mget account:A account:B
+> mget account:A account:B
 1) "120"
 2) "181"
 ```
