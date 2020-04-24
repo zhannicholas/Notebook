@@ -420,22 +420,31 @@ OK
 ```
 
 ### Geospatial indexes
-Redis在3.2.0版本中加入了地理空间(`geospatial`)这一数据类型，并支持索引半径查询功能。一个具体的位置信息由三元组(longtitude, latitude, name)确定，当向某一个key添加数据时，数据会被存储为有序集合，这么做为半径查询 **`GEORADIU`** 提供了支持。
+Redis在3.2.0版本中加入了地理空间(`geospatial`)这一数据类型，并支持半径查询功能。一个具体的位置信息由三元组(longtitude, latitude, member)确定。对于每一个`<latitude, longitude>`对，Redis都会计算出一个`GeoHash`(Redis中的`GeoHash`是一个`52`位的整数)。当我们使用 **`GEOADD key longitude latitude member [longitude latitude member ...]`**向一个key添加地理数据时，数据会被存储为<u>有序集合(`member`作为有序集合中的`member`，`GeoHash`作为有序集合中的`score`)</u>，这么做为半径查询 **`GEORADIUS key longitude latitude radius m|km|ft|mi [WITHCOORD] [WITHDIST] [WITHHASH] [COUNT count] [ASC|DESC] [STORE key] [STOREDIST key]`**和 **`GEORADIUSBYMEMBER key member radius m|km|ft|mi [WITHCOORD] [WITHDIST] [WITHHASH] [COUNT count] [ASC|DESC] [STORE key] [STOREDIST key]`**提供了支持。有序集合上的所有命令也能用于`geospatial`类型。
 
 下面是一些例子：
-```
+```Redis
 > geoadd municipalities 116.4551113869 39.6733986505 beijing 121.6406041505 30.8267595167 shanghai 106.6992091675 29.3055601981 chongqing  // 添加3个地理空间数据
 (integer) 3
-> geodist municipalities beijing chongqing             // 查看beijing和chongqing直接的距离(单位为米)
-"1457336.8906"
-> georadius municipalities 116 40 1000 km              // 查看以经度116、纬度40为中心，1000km为半径内的所有位置
-1) "beijing"
-> geohash municipalities beijing shanghai              // 查看beijing和chongqing的Geohash表示
-[1) "wx4cdn242c0"
+> zrange municipalities 0 -1 withscores   // 因为GeoHash使用有序集合存储，所以可以使用zrange命令
+1) "chongqing"
+2) "4026043269574572"
+3) "shanghai"
+4) "4054740844391077"
+5) "beijing"
+6) "4069148402401385"
+> type municipalities
+zset
+> geohash municipalities beijing shanghai              // 查看beijing和chongqing的GeoHash
+1) "wx4cdn242c0"
 2) "wtqrrgzfzs0"
 > geopos municipalities chongqing                      // 查看chongqing的地理空间数据
 1) 1) "106.69921070337295532"
    2) "29.30556015923176716"
+> geodist municipalities beijing chongqing             // 查看beijing和chongqing直接的距离(单位为米)
+"1457336.8906"
+> georadius municipalities 116 40 1000 km              // 查看以经度116、纬度40为中心，1000km为半径内的所有位置
+1) "beijing"
 > georadiusbymember municipalities chongqing 1500 km   // 查看以chongqing为中心、1500km为半径内的所有位置
 1) "chongqing"
 2) "shanghai"
