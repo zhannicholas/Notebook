@@ -23,6 +23,8 @@
         * [Redis数据结构](Databases/Redis/RedisDataStructures.md)
         * [Redis事务](Databases/Redis/Transactions.md)
         * [Publish/Subscribe](Databases/Redis/PublishSubscribe.md)
+        * [Lua脚本](Databases/Redis/LuaScripting.md)
+        * [Jedis](Databases/Redis/Jedis.md)
 * [分布式计算](DistributedComputation/README.md)
     * [ZooKeeper](DistributedComputation/ZooKeeper/README.md)
         * [安装ZooKeeper](DistributedComputation/ZooKeeper/Installation.md)
