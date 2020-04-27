@@ -21,6 +21,7 @@
     * [MySQL](Databases/MySQL/README.md)
     * [Redis](Databases/Redis/README.md)
         * [Redis数据结构](Databases/Redis/RedisDataStructures.md)
+        * [Redis Streams](Databases/Redis/Streams.md)
         * [Redis事务](Databases/Redis/Transactions.md)
         * [Publish/Subscribe](Databases/Redis/PublishSubscribe.md)
         * [Lua脚本](Databases/Redis/LuaScripting.md)

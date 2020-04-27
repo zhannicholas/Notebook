@@ -206,7 +206,7 @@ OK
 
 ### Hashes
 
-Redis中的哈希表(`hash`)是一个字符串类型的field-value映射表，不支持多级嵌套，非常适合表示对象。
+Redis中的哈希表(`hash`)是一个字符串类型的field-value映射表(field和value的类型均是`string`)，不支持多级嵌套，非常适合表示对象。
 
 下面是一些例子：
 ```Redis
@@ -452,7 +452,7 @@ zset
 ```
 
 ### Streams
-`Stream`是Redis 5.0中新增加的数据类型，它以更加抽象的方式模拟了日志结构，通常实现为一个仅以追加模式打开的文件。`stream`涉及到的内容比较多，后面会详细了解。这里先跳过。
+见[Redis Streams](Streams.md)。
 
 ## 参考文献
 1. [An introduction to Redis data types and abstractions](https://redis.io/topics/data-types-intro).
