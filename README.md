@@ -1,3 +1,3 @@
 # Introduction
 
-This is my personal notebook.
+This is my personal notebook, my knowledge base.

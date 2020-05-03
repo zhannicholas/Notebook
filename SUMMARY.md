@@ -1,6 +1,8 @@
 # Summary
 
 * [Introduction](README.md)
+* [算法](Algorithms/README.md)
+* [数据结构](DataStructures/README.md)
 * [Java](Java/README.md)
     * [多线程](Java/MultiThread/README.md)
         * [synchronized关键字](Java/MultiThread/Synchronized.md)
@@ -38,8 +40,10 @@
 * [操作系统](OperatingSystems/README.md)
     * [进程管理](OperatingSystems/ProcessManagement/README.md)
         * [进程与线程](OperatingSystems/ProcessManagement/ProcessesAndThreads.md)
+        * [死锁](OperatingSystems/ProcessManagement/Deadlocks.md)
     * [内存管理](OperatingSystems/MemoryManagement/README.md)
         * [Main Memory](OperatingSystems/MemoryManagement/MainMemory.md)
+    * [文件系统](OperatingSystems/FileSystem/README.md)
 * [NiFi](NiFi/README.md)
     * [单节点伪集群测试环境搭建](NiFi/SingleNodeClusterConfiguration.md)
 * [读书笔记](ReadingNotes/README.md)
