@@ -31,6 +31,7 @@
     * [网络协议](ComputerNetworks/Protocols/README.md)
 * [设计模式](DesignPatterns/README.md)
     * [代理模式](DesignPatterns/ProxyPattern/README.md)
+    * [适配器模式](DesignPatterns/AdapterPattern/README.md)
 * [Java SE](JavaSE/README.md)
     * [多线程](JavaSE/MultiThread/README.md)
         * [synchronized关键字](JavaSE/MultiThread/Synchronized.md)
