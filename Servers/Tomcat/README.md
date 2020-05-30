@@ -1,0 +1,1 @@
+[Apache Tomcat](http://tomcat.apache.org/)是 Java Servlet、JavaServer Pages、Java Expression Language和Java WebSocket技术的一个开源实现。它既是一个HTTP服务器，也是一个Servlet容器。
