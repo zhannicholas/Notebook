@@ -2,7 +2,7 @@
 
 ## 获取`Class`对象
 Java中共有两种类型：**引用类型**和 **基本类型**。引用类型包括：类、数组(类和数组都继承自 **`java.lang.Object`**)和接口。基本类型包括：`boolean`、`byte`、`short`、`char`、`int`、`long`、`float`、`double`。
-当Java程序运行时，JVM会为每种类型实例化一个<u>不可变的</u> **`java.lang.Class`**的实例，实例的很多数据都来自对应的 **`.class`**文件。**`java.lang.Class`**是反射API的入口，它不仅提供了获取及修改对象内部信息方法，还提供了世袭化对象的途径。有三种方式可以获取到 **`Class`**实例的引用：直接获取、使用 **`Object`**类的`getClass()`方法和使用 **`Class`**类的静态`forName(String className)`方法。
+当Java程序运行时，JVM会为每种类型实例化一个<u>不可变的</u> **`java.lang.Class`**类，实例的很多数据都来自对应的 **`.class`**文件。**`java.lang.Class`**是反射API的入口，它不仅提供了获取及修改对象内部信息方法，还提供了世袭化对象的途径。有三种方式可以获取到 **`Class`**实例的引用：直接获取、使用 **`Object`**类的`getClass()`方法和使用 **`Class`**类的静态`forName(String className)`方法。
 
 ### 直接获取
 
@@ -540,7 +540,7 @@ System.out.println(name.get(user));
 name.set(user, "Sarkar");
 System.out.println(name.get(user));
 ```
-这段代码先实例化了一个 **`User`**对象，然后通过反射读取`name`字段的值，之后又修改了`name`的值，运行结果如下：
+这段代码先实例化了一个 **`User`**类，然后通过反射读取`name`字段的值，之后又修改了`name`的值，运行结果如下：
 ```txt
 Nicholas
 Sarkar

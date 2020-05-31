@@ -1,7 +1,7 @@
 # 代理模式
 > Provide a surrogate or placeholder for another object to control access to it.
 
-**代理模式(Proxy Pattern)**属于结构型模式，又称**Surrogate**，其主要思想为：给某一个对象提供一个代理，并由代理对象控制对原对象的引用。因为代理模式中引入了一个新的代理对象，代理对象可以在客户端和目标对象之间起到中介的作用，所以可以去掉客户端不应该看到的内容或服务或者给客户端提供额外的服务。
+**代理模式(Proxy Pattern)**属于结构型模式，**Proxy**又称**Surrogate**，其主要思想为：给某一个对象提供一个代理，并由代理对象控制对原对象的引用。因为代理模式中引入了一个新的代理对象，代理对象可以在客户端和目标对象之间起到中介的作用，所以可以去掉客户端不应该看到的内容或服务或者给客户端提供额外的服务。
 
 ## 模式的结构与实现
 
@@ -56,6 +56,8 @@ PostRequest.
 ```
 在上面的代码中，客户端不仅通过代理类调用了真实主题类的方法，还在其前后调用了一些其它的方法。
 
+在实现代理模式时，Proxy并不总是需要知道Subject的具体类型。若Proxy能够完全通过一个抽象接口来处理它的Subject，则无须为每一个RealSubject都生成一个Proxy，Proxy可以统一处理所有的RealSubject。但是，如果Proxy需要实例化RealSubject(例如虚拟代理)，那么就必须知道Subject的具体类型。
+
 ## 使用场景
 下面是一些可以使用代理模式的场景：
 * **虚拟代理(Virtual Proxy)**按需创建开销很大的对象。Spring框架中的**`LazyConnectionDataSourceProxy`** 就是一个例子，它将JDBC **`DataSource`**的创建推迟到了第一条**`Statement`**被创建之后。
@@ -68,6 +70,6 @@ PostRequest.
 
 由于代理对象出现在客户端和真实对象之间，这加大了客户端和真实对象之间的距离，可能会降低请求的处理速度。同时，代理模式的实现也需要额外工作，这可能加大系统的复杂性。
 
-## 参考文献
+## 参考资料
 1. 《Design Patterns: Elements of Reusable Object-Oriented Software》.
 2. 《设计模式的艺术：软件开发人员内功修炼之道》.
