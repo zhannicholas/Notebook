@@ -18,7 +18,7 @@ interfaces.
 * **Adapter(适配器)**
     * 完成从**Adaptee**接口到**Target**接口的适配。
 
-### 实现
+### 示例
 首先定义 **`Target`** 类和 **`Adaptee`** 类：
 ```Java
 // 目标接口

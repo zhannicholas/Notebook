@@ -18,7 +18,7 @@
 * **RealSubject(真实主题类)**
   * 定义代理所代表的 **`RealSubject`**。它包含真实的业务操作，客户端可以通过代理对象间接调用这些业务操作。
 
-### 实现
+### 示例
 根据UML图，可以写出以下代码：
 ```Java
 public interface Subject{void request();}

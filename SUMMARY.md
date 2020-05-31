@@ -34,6 +34,7 @@
         * [代理模式](DesignPatterns/StructuralPatterns/ProxyPattern.md)
         * [适配器模式](DesignPatterns/StructuralPatterns/AdapterPattern.md)
         * [装饰器模式](DesignPatterns/StructuralPatterns/DecoratorPattern.md)
+        * [组合模式](DesignPatterns/StructuralPatterns/CompositePattern.md)
 * [Java SE](JavaSE/README.md)
     * [多线程](JavaSE/MultiThread/README.md)
         * [synchronized关键字](JavaSE/MultiThread/Synchronized.md)

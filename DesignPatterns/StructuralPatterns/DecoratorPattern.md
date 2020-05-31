@@ -21,7 +21,7 @@
 * **ConcreteDecorator(具体装饰器)**
     * 它继承了 **`Decorator`**，负责给 **`Component`** 添加新的职责。每一个 **`ConcreteDecorator`** 都定义了各自新的职责。
 
-### 实现
+### 示例
 首先定义 **`Componnet`** 和 **`ConcreteComponent`**：
 ```Java
 public interface Component {
