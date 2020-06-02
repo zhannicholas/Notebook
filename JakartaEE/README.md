@@ -1,1 +1,1 @@
-See: [Java EE vs J2EE vs Jakarta EE](https://www.baeldung.com/java-enterprise-evolution).
+[Java EE](https://www.oracle.com/java/technologies/java-ee-glance.html)(Java Platform, Enterprise Edition)是构建在[Java SE](https://www.oracle.com/technetwork/java/javase/overview/index.html)之上的一套企业级标准，早期被称为J2EE(Java 2 Platform Enterprise Edition)，现在则被称为[Jakarta EE](https://jakarta.ee/)。
