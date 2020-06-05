@@ -52,6 +52,7 @@
 * [JVM](JVM/README.md)
     * [HotSpot VM](JVM/HotSpotVM/README.md)
         * [HotSpot引擎架构](JVM/HotSpotVM/HotSpotEngineArchitecture.md)
+        * [HotSpot中的内存管理(J2SE5.0)](JVM/HotSpotVM/MemoryManagementInJ2SE5.md)
 * [Spring](Spring/README.md)
 * [各种服务器](Servers/README.md)
     * [Tomcat](Servers/Tomcat/README.md)
