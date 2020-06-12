@@ -1,4 +1,4 @@
-# Locks接口
+# Locks
 `Lock`接口中定义了一组抽象的加锁操作。与内置加锁机制不同的是，`Lock`提供了一种无条件的、可轮询的、定时的以及可中断的锁获取操作，所有加锁和解锁的方法都是显式的。`Lock`接口的定义如下：
 ```Java
 public interface Lock {
@@ -209,6 +209,6 @@ public interface Condition {
 
 特别注意：在`Condition`对象中，与`wait()`、`notify()`、`notifyAll()`方法对应的分别是`await()`、`signal()`和`signalAll()`。`Condition`对`Object`进行了扩展，因为它也包含`wait()`和`notify()`等方法。一定要确保使用正确的版本——`await()`和`signal()`。
 
-## 参考文献
+## 参考资料
 1. 《Java并发编程实战》及其原著.
 2. 《Java并发编程的艺术》.

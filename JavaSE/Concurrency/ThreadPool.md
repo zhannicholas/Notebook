@@ -108,6 +108,6 @@ public void execute(Runnable command) {
 * **`CallerRunsPolicy`**：由调用者执行。不丢弃任务，也不抛出异常，而是将任务退回给调用者。它不会在线程池中的某个线程中执行新提交的任务，而是在调用了`execute(Runnable command)`方法的线程（调用者线程）中继续执行该任务。
 
 
-## 参考文献
+## 参考资料
 1. 《Java并发编程实战》及其原著.
 2. 《Java并发编程的艺术》.
