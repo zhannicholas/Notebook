@@ -35,5 +35,5 @@ Dijkstra算法是一种非常有名的最短路径算法，它能够找出图中
 链路状态路由算法在实际的网络中使用非常广泛，典型的有IS-IS(Intermediate System-Intermediate System)和OSPF(Open Shortest Path First)。
 
 ## 参考文献
-1. 《计算机网络》(第五版).
-2. 《算法导论》(第三版).
+1. ANDREW S. TANENBAUM, DAVID J. WETHERALL. <i>Computer Networks, Fifth Edition</i>. Pearson, 2011.
+2. Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein. <i>Introduction to Algorithms, third Edition</i>. The MIT Press, 2009.

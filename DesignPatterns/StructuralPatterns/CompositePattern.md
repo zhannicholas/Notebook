@@ -111,5 +111,5 @@ Performing operation defined in Leaf[940553268].
 组合模式主要用在具有*整体-部分*结构的层次结构中，一致对待整体和部分，这一般是一个树形结构。使用组合模式，可以清楚的定义分层次的复杂对象，使得客户端可以忽略层次之间的差异，方便对整个结构进行控制，简化操作。在组合模式中增加新的叶子组件和容器组件时非常方便，不用修改已有代码，符合开闭原则。但是，组合模式很难在增加新构件的时候对构件的类型进行限制。
 
 ## 参考资料
-1. 《Design Patterns: Elements of Reusable Object-Oriented Software》.
-2. 《设计模式的艺术：软件开发人员内功修炼之道》.
+1. Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides. <i>Design Patterns: Elements of Reusable Object-Oriented Software</i>. Addison-Wesley Professional, 1994.
+2. 刘伟. 设计模式的艺术：软件开发人员内功修炼之道. 清华大学出版社, 2013.

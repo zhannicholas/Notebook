@@ -221,6 +221,6 @@ LRU是一个不错的算法，主要的问题就是如何实现LRU置换。算�
 一些现代计算机采用了**段页式(segmented paging)**的内存管理方案。主存先被划分为若干可变大小的段，每个段进一步被划分为若干固定大小的页。每个段包含一个页表，因此一个进程可能有多个页表。这个时候，一个虚拟地址又三部分组成：段号、段内页号和页偏移。当进行内存访问时，先通过段表找到对应的段，然后通过段内页表找到对应的页，最后根据页偏移找到物理地址。
 
 ## 参考资料
-1. Modern Operating Systems (4th Edition).
-2. Computer Systems: A Programmer's Perspective (3th Edition).
-3. Operating System Concepts (10th Edition).
+1. ANDREW S. TANENBAUM, HERBERT BOS. <i>Modern Operating Systems, 4th Edition</i>. Pearson, 2015.
+2. Randal E. Bryant, David R. O’Hallaron. <i>Computer Systems: A Programmer's Perspective, 3th Edition</i>. Pearson, 2016. 
+3. Abraham Silberschatz, Greg Gagne, Peter B. Galvin. <i>Operating System Concepts, 10th Edition</i>. Wiley, 2018.

@@ -39,4 +39,4 @@ Hypervisor创建并管理虚拟环境，分为两种：
 [虚拟机](./VirtualMachines.md)一章详细介绍了两类hypervisor。
 
 ## 参考资料
-1. Modern Operating Systems (4th Edition).
+1. ANDREW S. TANENBAUM, HERBERT BOS. <i>Modern Operating Systems, 4th Edition</i>. Pearson, 2015.

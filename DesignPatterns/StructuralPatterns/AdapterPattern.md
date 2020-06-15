@@ -103,5 +103,5 @@ Java中的 **`InputStreamReader`** 就是对象适配器的一个例子，它将
 * 不需要额外的指针去引用Adaptee。
 
 ## 参考资料
-1. 《Design Patterns: Elements of Reusable Object-Oriented Software》.
-2. 《设计模式的艺术：软件开发人员内功修炼之道》.
+1. Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides. <i>Design Patterns: Elements of Reusable Object-Oriented Software</i>. Addison-Wesley Professional, 1994.
+2. 刘伟. 设计模式的艺术：软件开发人员内功修炼之道. 清华大学出版社, 2013.

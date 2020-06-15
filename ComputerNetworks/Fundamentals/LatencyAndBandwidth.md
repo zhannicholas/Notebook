@@ -47,5 +47,5 @@ $$
 这告诉了我们实际信道能够获得的最大容量。
 
 ## 参考文献
-1. 《High Performance Browser Networking》.
-2. 《计算机网络》(第五版).
+1. Ilya Grigorik. <i>High Performance Browser Networking</i>. O'Reilly Media, 2013.
+2. ANDREW S. TANENBAUM, DAVID J. WETHERALL. <i>Computer Networks, Fifth Edition</i>. Pearson, 2011.

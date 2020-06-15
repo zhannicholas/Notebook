@@ -48,4 +48,4 @@ CIDR的工作原理：当一个数据包到达时，路由器扫描路由表以�
 IPv6不仅解决了IPv4地址耗尽的问题，还做了很多的改进。IPv6地址由16个字节组成，16个字节被分成8组来书写，每一组4个16进制数字，组之间用冒号隔开。
 
 ## 参考文献
-1. 《计算机网络》(第五版).
+1. ANDREW S. TANENBAUM, DAVID J. WETHERALL. <i>Computer Networks, Fifth Edition</i>. Pearson, 2011.

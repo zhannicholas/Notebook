@@ -16,4 +16,4 @@
 抽象是管理复杂性的一个关键。好的抽象可以把一个几乎不可能管理的任务划分为两个可管理的部分：第一部分是有关抽象的定义和实现，第二部分是随时使用这些抽象解决问题。操作系统的一个主要任务就是隐藏硬件，创建好抽象，并实现和管理它所创建的抽象对象，最终呈现给应用程序(以及程序员)良好、清晰、一致的抽象。
 
 ## 参考资料
-1. Modern Operating Systems (4th Edition).
+1. ANDREW S. TANENBAUM, HERBERT BOS. <i>Modern Operating Systems, 4th Edition</i>. Pearson, 2015.

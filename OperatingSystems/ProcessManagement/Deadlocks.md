@@ -213,7 +213,6 @@
 ### 饥饿
 当线程由于无法访问它所需要的资源而不能继续执行时，就发生了**饥饿(Starvation)**。例如：Java应用程序对线程的优先级设置不当，导致部分线程无法获取CPU时钟周期。可以通过FIFO策略来避免饥饿，也可以在引入老化机制，动态的调整线程优先级，使每个线程的优先级都有机会变成最高的。
 
-
 ## 参考资料
-1. Modern Operating Systems (4th Edition).
-2. Operating System Concepts (10th Edition).
+1. ANDREW S. TANENBAUM, HERBERT BOS. <i>Modern Operating Systems, 4th Edition</i>. Pearson, 2015.
+2. Abraham Silberschatz, Greg Gagne, Peter B. Galvin. <i>Operating System Concepts, 10th Edition</i>. Wiley, 2018.

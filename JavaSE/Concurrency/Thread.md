@@ -57,5 +57,5 @@ JVM内部实现了很多锁机制，有意思的是除了偏向锁，JVM实现�
 2. 前者在方法声明上抛出了`InterruptedException`异常，而后者没有声明任何异常。
 
 ## 参考资料
-1. 《Java并发编程实战》及其原著.
-2. 《Java并发编程的艺术》.
+1. Brian Goetz, Tim Peierls, Joshua Bloch, Joseph Bowbeer, David Holmes, and Doug Lea. <i>Java Concurrency in Practice</i>. Addison-Wesley Professional, 2006.
+2. 方腾飞, 魏鹏, 程晓明. Java并发编程的艺术. 机械工业出版社, 2015.

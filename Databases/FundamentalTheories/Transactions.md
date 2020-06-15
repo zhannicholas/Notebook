@@ -134,5 +134,5 @@ SQL标准定义了4个隔离级别：
 MySQL默认的隔离级别为可重复读，而Oracle、SQL Server和PostgreSQL默认的隔离界别为读取已提交。
 
 # 参考文献
-1. 《High Performance Java Persistence》.
-2. 《数据库系统概念》(第六版).
+1. Vlad Mihalcea. <i>High Performance Java Persistence: Get the most out of your persistence layer</i>. 2015.
+2. Abaham Siberschatz, Henry F.Kort, S.Sudarshan. 数据库系统概念(第六版). 杨冬青, 李红燕, 唐世渭, 译. 机械工业出版社, 2013.

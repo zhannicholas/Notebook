@@ -12,4 +12,4 @@ Goldberg对两类虚拟化技术进行了区分。从技术的角度看，一类
 
 
 ## 参考资料
-1. Modern Operating Systems (4th Edition).
+1. ANDREW S. TANENBAUM, HERBERT BOS. <i>Modern Operating Systems, 4th Edition</i>. Pearson, 2015.

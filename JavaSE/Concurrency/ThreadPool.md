@@ -109,5 +109,5 @@ public void execute(Runnable command) {
 
 
 ## 参考资料
-1. 《Java并发编程实战》及其原著.
-2. 《Java并发编程的艺术》.
+1. Brian Goetz, Tim Peierls, Joshua Bloch, Joseph Bowbeer, David Holmes, and Doug Lea. <i>Java Concurrency in Practice</i>. Addison-Wesley Professional, 2006.
+2. 方腾飞, 魏鹏, 程晓明. Java并发编程的艺术. 机械工业出版社, 2015.

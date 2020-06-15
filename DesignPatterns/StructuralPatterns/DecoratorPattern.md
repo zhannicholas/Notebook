@@ -102,5 +102,5 @@ Attaching new responsibilities to concrete component ...
 2. 采用装饰器模式时，系统中往往会产生很多小对象，大量的小对象会占用更多的系统资源。
 
 ## 参考资料
-1. 《Design Patterns: Elements of Reusable Object-Oriented Software》.
-2. 《设计模式的艺术：软件开发人员内功修炼之道》.
+1. Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides. <i>Design Patterns: Elements of Reusable Object-Oriented Software</i>. Addison-Wesley Professional, 1994.
+2. 刘伟. 设计模式的艺术：软件开发人员内功修炼之道. 清华大学出版社, 2013.

@@ -547,7 +547,7 @@ Sarkar
 ```
 
 ## 参考文献
-1. 《The Java Language Specification, Java SE 11 Edition》.
-2. 《The Java Virtual Machine Specification, Java SE 11 Edition》.
+1. James Gosling, Bill Joy, Guy Steele, Gilad Bracha, Alex Buckley, Daniel Smith. The Java Language Specification: Java SE 11 Edition. 2018.
+2. Tim Lindholm, Frank Yellin, Gilad Bracha, Alex Buckley, Daniel Smith. The Java Virtual Machine Specification: Java SE 11 Edition. 2018.
 3. [Trail: The Reflection API](https://docs.oracle.com/javase/tutorial/reflect/).
 

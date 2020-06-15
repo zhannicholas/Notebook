@@ -312,4 +312,4 @@ mutex_unlock:
 
 
 ## 参考资料
-1. Modern Operating Systems (4th Edition).
+1. ANDREW S. TANENBAUM, HERBERT BOS. <i>Modern Operating Systems, 4th Edition</i>. Pearson, 2015.

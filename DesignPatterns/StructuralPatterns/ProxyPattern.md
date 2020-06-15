@@ -71,5 +71,5 @@ PostRequest.
 由于代理对象出现在客户端和真实对象之间，这加大了客户端和真实对象之间的距离，可能会降低请求的处理速度。同时，代理模式的实现也需要额外工作，这可能加大系统的复杂性。
 
 ## 参考资料
-1. 《Design Patterns: Elements of Reusable Object-Oriented Software》.
-2. 《设计模式的艺术：软件开发人员内功修炼之道》.
+1. Erich Gamma, Richard Helm, Ralph Johnson, John Vlissides. <i>Design Patterns: Elements of Reusable Object-Oriented Software</i>. Addison-Wesley Professional, 1994.
+2. 刘伟. 设计模式的艺术：软件开发人员内功修炼之道. 清华大学出版社, 2013.
