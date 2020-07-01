@@ -17,7 +17,14 @@
 在开发基于HTTP的Servlet时，开发者一般只需要关心`doGet`和`doPost`方法即可。
 
 ## Servlet生命周期
-Servlet有一个定义非常良好的生命周期，它定义了Servlet是如何被加载并被实例化、如何初始化、如何处理客户端请求以及如何结束服务的。这个生命周期是通过 **`Servlet`**接口的`init`、`service`和`destroy`方法来定义的，所有的Servlet都必须直接或间接实现这几个方法。
+Servlet有一个定义非常良好的生命周期，它定义了Servlet是如何被加载并被实例化、如何初始化、如何处理客户端请求以及如何结束服务的。这个生命周期是通过 **`Servlet`**接口的`init`、`service`和`destroy`方法来定义的，所有的Servlet都必须直接或间接地实现这几个方法。Servlet的生命周期是由Servlet容器控制的，当一个请求被映射到一个Servlet时，容器会进行以下步骤：
+1. 如果容器中没有该Servlet的实例，容器就会：
+    a. 加载Servlet。
+    b. 创建Servlet实例。
+    c. 调用`init`方法对Servlet进行初始化。
+2. 容器调用Servlet的`service`方法并传入request和response对象。
+
+当容器需要移除一个Servlet时，它会调用Servlet的`destroy`方法进行收尾工作。
 
 ### 加载与实例化
 Servlet的加载与实例化是由Servlet容器负责的。Servlet的加载与初始化可以发生在Servlet容器启动时，也可以延迟到需要处理请求时才发生。Servlet容器使用Java的类加载机制来加载Servlet，被加载的Servlet可能来自本地文件系统，也可能来自远程文件系统或其它网络服务。当Servlet被加载成功之后，容器就会实例化它以备将来使用。

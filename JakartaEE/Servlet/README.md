@@ -18,5 +18,59 @@
 4. Servlet从request对象中获取到远程用户的身份、请求参数和其它相关数据，然后执行处理逻辑，最后生成响应数据(通过response对象)并发回给客户端。
 5. 一旦Servlet完成整个请求处理过程，Servlet容器就会刷新响应，然后将控制权归还给Web服务器。
 
+# 一个简单的Servlet
+下面将编写一个非常简单的Servlet，它将展现编写Servlet的所有基本要求。最终该Servlet会在浏览器中输出一些文本：
+> Hello, Servlet!
+
+我这里使用的开发工具是IDEA，Servlet容器时Tomcat 9.0.35。我直接使用IDEA创建了一个Java Enterprise工程，相关配置如下：
+
+| Name                                | Value           |
+| ----------------------------------- | --------------- |
+| Java EE version                     | Java EE 8       |
+| Application Server                  | Tomcat 9.0.35   |
+| Additional Libraries and Frameworks | Web Application |
+
+## 创建Servlet类
+Servlet是一个Java类，我们创建了一个比较简单的，它直接继承了 **`HttpServlet`**并重写了`service`方法：
+```Java
+public class HelloServlet extends HttpServlet {
+    @Override
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        PrintWriter writer = resp.getWriter();
+        writer.println("Hello, Servlet!");
+        writer.close();
+    }
+}
+```
+`service`方法是Servlet容器在Servlet生命周期中调用的最基本的处理方法。在我们的`service`方法中，我们将`Hello, Servlet!`写到了响应对象的输出流中。
+
+## 配置Web程序
+在WEB-INF目录下创建web.xml文件，文件内容如下：
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+    <servlet>
+        <servlet-name>hello-servlet</servlet-name>
+        <servlet-class>ml.zhannicholas.servletdemos.HelloServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>hello-servlet</servlet-name>
+        <url-pattern>/hello</url-pattern>
+    </servlet-mapping>
+</web-app>
+```
+该文件向Tomcat描述了我们要发布的Web应用程序。文件中的`servlet-name`表示所使用的Servlet的名字。`servlet-class`元素将该名称映射到一个Servlet的实现类，本示例中为 **`HelloServlet`**。`servlet-mapping`元素告诉Tomcat我们的Servlet只处理对`/hello`的请求。
+
+设置好web.xml后，就可以启动Tomcat了。
+
+## 运行Servlet
+在Tomcat成功发布我们的Web应用之后，访问http://localhost:8080/hello 就可以看到我们的`Hello, Servlet!`信息了。
+
+示例代码位于[Github](https://github.com/zhannicholas/java-demos/tree/master/jakarta-ee/servlet-demos)。
+
 # 参考资料
 1. Shing Wai, Chan Ed Burns. <i>Java™ Servlet Specification, Version 4.0</i>. Oracle Corporation, 2017.
