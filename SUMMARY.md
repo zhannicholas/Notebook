@@ -29,6 +29,7 @@
         * [路由算法](ComputerNetworks/Fundamentals/RoutingAlgorithms.md)
         * [IP地址与IP寻址](ComputerNetworks/Fundamentals/IpAddressing.md)
     * [网络协议](ComputerNetworks/Protocols/README.md)
+* [HTTP](HTTP/README.md)
 * [设计模式](DesignPatterns/README.md)
     * [结构型模式](DesignPatterns/StructuralPatterns/README.md)
         * [代理模式](DesignPatterns/StructuralPatterns/ProxyPattern.md)
