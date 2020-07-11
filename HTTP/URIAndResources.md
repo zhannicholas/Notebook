@@ -83,4 +83,5 @@ urn:oasis:names:specification:docbook:dtd:xml:4.1.2
 2. [Uniform Resource Identifier](https://en.wikipedia.org/wiki/Uniform_Resource_Identifier).
 3. [Uniform Resource Locator](https://en.wikipedia.org/wiki/URL).
 4. [Uniform Resource Name](https://en.wikipedia.org/wiki/Uniform_Resource_Name).
-4. [RFC 3986](https://tools.ietf.org/html/rfc3986).
+5. [RFC 3986](https://tools.ietf.org/html/rfc3986).
+6. David Gourley, Brian Totty. HTTP: The Definitive Guide. O'Reilly Media, 2002.
