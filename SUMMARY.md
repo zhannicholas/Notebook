@@ -30,6 +30,7 @@
         * [IP地址与IP寻址](ComputerNetworks/Fundamentals/IpAddressing.md)
     * [网络协议](ComputerNetworks/Protocols/README.md)
 * [HTTP](HTTP/README.md)
+    * [URI与资源](HTTP/URIAndResources.md)
 * [设计模式](DesignPatterns/README.md)
     * [结构型模式](DesignPatterns/StructuralPatterns/README.md)
         * [代理模式](DesignPatterns/StructuralPatterns/ProxyPattern.md)

@@ -3,6 +3,8 @@
 
 和其它基于Java的组件一样，Servlet也由Java类组成，这些Java类(`.class`文件)会被编译成字节码，字节码随后会被动态地加载到Web服务器中并运行。Servlet通过Servlet容器实现的**request/response模型**来与Web客户端进行交互。
 
+**request/response模型**：可以简单的将这个模型看成是一种客户端与服务端通过交换各自的消息来交互的一个过程。像浏览器这样的客户端发出的消息叫做**requests**，而服务端响应的消息就叫做**responses**。
+
 # 什么是Servlet容器
 > The servlet container is a part of a Web server or application server that provides the network services over which requests and responses are sent, decodes MIME-based requests, and formats MIME-based responses. A servlet container also contains and manages servlets through their lifecycle.
 
