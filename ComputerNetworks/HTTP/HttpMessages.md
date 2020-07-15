@@ -5,7 +5,7 @@
 作为HTTP应用程序之间发送的数据块，HTTP报文以一些描述了报文内容及含义的文本形式的*元信息（meta-information）*开头，后面跟着可选的数据部分。这些报文在客户端、服务器和代理之间流动，术语**流入（inbound）**、**流出（outbound）**、**上游（upstream）**和**下游（downstream）**就是用来描述报文的方向的。
 
 ### Inbound与Outbound
-HTTP使用术语*inbound*和*outbound*来描述事务处理的方向。报文流入源端服务器，处理完成之后又会流回用户的Agent代理中：
+HTTP使用术语*inbound*和*outbound*来描述事务处理的方向。报文流入源端服务器，处理完成之后又会流出到用户的Agent代理中：
 
 ![Messages Travel inbound to the origin server and outbound back to the client](images/messages-travel-inbound-to-the-origin-server-and-outbound-back-to-the-client.png)
 
@@ -91,7 +91,7 @@ HTTP报文本身是由多行（用`CRLF`作换行符）数据构成的字符串�
 
 #### 版本号
 
-版本号会以`HTTP/x.y`的形式出现在起始行中，HTTP应用程序用它来告诉对方自己所遵循的协议版本，以便双方互相理解。版本号说明了应用程序支持的最高HTTP版本。
+版本号会以`HTTP/<major>.<minor>`的形式出现在起始行中，HTTP应用程序用它来告诉对方自己所遵循的协议版本，以便双方互相理解。版本号说明了应用程序支持的最高HTTP版本。
 
 ### 首部
 

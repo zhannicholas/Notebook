@@ -31,6 +31,7 @@
     * [HTTP](ComputerNetworks/HTTP/README.md)
         * [URI与资源](ComputerNetworks/HTTP/URIAndResources.md)
         * [HTTP报文](ComputerNetworks/HTTP/HttpMessages.md)
+        * [HTTP连接管理](ComputerNetworks/HTTP/ConnectionManagement.md)
 * [设计模式](DesignPatterns/README.md)
     * [结构型模式](DesignPatterns/StructuralPatterns/README.md)
         * [代理模式](DesignPatterns/StructuralPatterns/ProxyPattern.md)
