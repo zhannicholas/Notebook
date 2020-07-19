@@ -33,6 +33,7 @@
         * [HTTP报文](ComputerNetworks/HTTP/HttpMessages.md)
         * [HTTP连接管理](ComputerNetworks/HTTP/ConnectionManagement.md)
         * [代理](ComputerNetworks/HTTP/Proxies.md)
+        * [Web缓存](ComputerNetworks/HTTP/Caching.md)
 * [设计模式](DesignPatterns/README.md)
     * [结构型模式](DesignPatterns/StructuralPatterns/README.md)
         * [代理模式](DesignPatterns/StructuralPatterns/ProxyPattern.md)
