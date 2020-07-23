@@ -35,6 +35,7 @@
         * [代理](ComputerNetworks/HTTP/Proxies.md)
         * [Web缓存](ComputerNetworks/HTTP/Caching.md)
         * [网关、隧道和中继](ComputerNetworks/HTTP/GatewaysTunnelsAndRelays.md)
+        * [客户端身份识别与Cookie](ComputerNetworks/HTTP/ClientIdentificationAndCookies.md)
 * [设计模式](DesignPatterns/README.md)
     * [结构型模式](DesignPatterns/StructuralPatterns/README.md)
         * [代理模式](DesignPatterns/StructuralPatterns/ProxyPattern.md)
