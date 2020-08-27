@@ -11,6 +11,11 @@ Web资源保存在Web服务器上，通过**统一资源标识符（Uniform Reso
 ## URI
 > A **Uniform Resource Identifier (URI)** is a string of characters that unambiguously identifies a particular resource. 
 
+[RFC2396](https://tools.ietf.org/html/rfc2396#section-1.1)对组成了URI的三个单词进行了定义：
+* Uniform: 规定统一的格式可方便处理多种不同类型的资源，而不用根据上下文 环境来识别资源指定的访问方式。另外，加入新增的协议方案（如 http: 或 ftp:）也更容易。
+* Resource: 资源的定义是“可标识的任何东西”。除了文档文件、图像或服务（例 如当天的天气预报）等能够区别于其他类型的，全都可作为资源。另 外，资源不仅可以是单一的，也可以是多数的集合体。
+* Identifier: 表示可标识的对象。也称为标识符。
+
 简而言之，URI可以唯一标识并定位Web上的资源，它有URL和URN两种形式。
 
 ### URI的语法
@@ -85,3 +90,4 @@ urn:oasis:names:specification:docbook:dtd:xml:4.1.2
 4. [Uniform Resource Name](https://en.wikipedia.org/wiki/Uniform_Resource_Name).
 5. [RFC 3986](https://tools.ietf.org/html/rfc3986).
 6. David Gourley, Brian Totty. HTTP: The Definitive Guide. O'Reilly Media, 2002.
+7. 【日】上野 宣, 图解HTTP, 人民邮电出版社, 2014.
