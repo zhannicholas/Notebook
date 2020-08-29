@@ -3,6 +3,8 @@
 * [Introduction](README.md)
 * [数据结构](DataStructures/README.md)
 * [算法](Algorithms/README.md)
+    * [排序](Algorithms/Sorting/README.md)
+        * [插入排序](Algorithms/Sorting/InsertionSort.md)
 * [操作系统](OperatingSystems/README.md)
     * [进程管理](OperatingSystems/ProcessManagement/README.md)
         * [进程与线程](OperatingSystems/ProcessManagement/ProcessesAndThreads.md)
