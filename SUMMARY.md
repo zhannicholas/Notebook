@@ -85,3 +85,4 @@
         * [多处理器计算机](ReadingNotes/ModernOperatingSystems/MultipleProcessorSystems.md)
         * [安全](ReadingNotes/ModernOperatingSystems/Security.md)
     * [Data Structures & Algorithms in Java](ReadingNotes/DataStructuresAndAlgorithmsInJava/README.md)
+    * [Design Concepts for Engineers](ReadingNotes/DesignConceptsForEngineers/README.md)
