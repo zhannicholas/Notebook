@@ -1,5 +1,7 @@
 # Locks
-`Lock`接口中定义了一组抽象的加锁操作。与内置加锁机制不同的是，`Lock`提供了一种无条件的、可轮询的、定时的以及可中断的锁获取操作，所有加锁和解锁的方法都是显式的。`Lock`接口的定义如下：
+> 文章中涉及的源代码摘自OpenJdk 11。
+
+`Lock`接口中定义了一组抽象的锁操作。与内置加锁机制不同的是，`Lock`提供了一种无条件的、可轮询的、定时的以及可中断的锁获取操作，所有加锁和解锁的方法都是显式的。`Lock`接口的定义如下：
 ```Java
 public interface Lock {
 	void lock();
@@ -10,10 +12,9 @@ public interface Lock {
 	Condition newCondition();
 }
 ```
+`ReentrantLock`实现了`Lock`接口，并提供了与`synchronized`相同的互斥性和内存可见性。获取`ReentrantLock`的语义与进入同步代码块一致，释放`RenentrantLock`的语义也同退出同步代码块一致。与`synchronized`一样，`ReentrantLock`也提供了可重入的加锁语义。但`ReentrantLock`比`synchronized`更加灵活，最典型的就是前者支持非公平和公平的锁获取机制，而后者只支持公平的锁获取机制。
 
-`ReentrantLock`实现了`Lock`接口，并提供了与`synchronized`相同的互斥性和内存可见性。获取`ReentrantLock`的语义与进入同步代码块一致，释放`RenentrantLock`的语义也同退出同步代码块一致。与`synchronized`一样，`ReentrantLock`也提供了可重入的加锁语义。但`ReentrantLock`比`synchronized`更加灵活。最典型的就是前者支持非公平和公平的锁获取机制，而后者只支持公平的锁获取机制。
-
-以下是`Lock`接口的标准使用形式，它比内置锁更复杂，并且必须在`finally`块中释放锁。否则，如果在被保护的代码中抛出了异常，那么这个锁永远都无法释放。
+以下是`Lock`接口的标准使用形式，它比内置锁更复杂，并且必须在`finally`块中释放锁。否则，如果在被保护的代码中抛出了异常，这个锁将无法释放。
 ```Java
 Lock lock = new ReentrantLock();
 …
@@ -26,20 +27,23 @@ try {
 }
 ```
 
-## `synchronized`与`Lock`的区别
-1. `synchronized`使用的是`Object`对象的`wait()`、`notify()`、`notifyAll()`调度机制，而`Lock`使用的是`Condition`接口的`await()`、`signal()`、`signalAll()`完成线程之间的调度。
-2. `sychronized`的作用限于同步代码块，而`Lock`需要手动给出锁的起始和结束位置。前者的执行是托管给JVM的，后者是通过代码手动控制的。
-3. 前者能够自动释放锁，后者需要手动释放锁。
-4. 前者只能以阻塞的方式获得锁，后者可以使用非阻塞的方式去获得锁。
+## `synchronized` vs `Lock`
+1. 前者是JVM隐式实现的，而后者是Java语言提供的API。
+2. 前者的锁只能是非公平的，而后者的一些实现可以允许锁是公平的。
+3. `synchronized`使用的是`Object`对象的`wait()`、`notify()`、`notifyAll()`调度机制，而`Lock`使用的是`Condition`接口的`await()`、`signal()`、`signalAll()`完成线程之间的调度。
+4. `synchronized`的作用限于同步代码块（包括方法），而`Lock`需要手动给出锁的起始和结束位置。前者的执行是托管给JVM的，后者是通过代码手动控制的。
+5. 前者会自动释放锁，而后者需要手动释放锁。
+6. 前者只能以阻塞的方式获得锁，后者可以使用非阻塞的方式去获得锁。
 
+...
 ## AbstractQueuedSynchronizer(AQS)
-`Lock`接口的实现基本都是通过聚合一个`AbstractQueuedSynchronizer`的子类来完成线程访问控制的。
+`Lock` 接口的实现基本都是通过聚合一个 `AbstractQueuedSynchronizer` 的子类来完成线程访问控制的。
 
 **`AQS`**是一个用于构建锁和同步器的框架，`ReentrantLock`、`Semaphore`、`CountDownLatch`、`ReentrantReadWriteLock`、`SynchronousQueue`等都是基于它实现的。
 
 在基于`AQS`构建的同步器类中，最基本的操作包括各种形式的获取操作和释放操作。获取操作是一种依赖状态的操作，通常也会阻塞。相反，释放操作并不是一个阻塞操作，当执行释放操作时，所有在请求时被阻塞的线程都会开始执行。
 
-`AQS`负责管理同步器类中的状态，它用一个int类型的字段 **`state`**来保存状态信息，可以通过`getState()`、`setState()`以及`CompareAndSetState()`等方法来进行操作。`state`可以表示任意状态。例如：`ReentrantLock`用它来表示所有者线程已经重复获取该锁的次数；`Semaphore`用它表示剩余的许可数量；`CountDownLatch`用它来表示计数器当前的值；`ReentrantReadWriteLock`用`state`的高16位表示读状态，也就是获取读锁的次数，低16位表示获取写锁的次数。<u>对于`AQS`来说，线程同步的关键就是对状态值`state`进行操作</u>。
+`AQS`负责管理同步器类中的状态，它用一个int类型的字段 **`state`** 来保存状态信息，可以通过`getState()`、`setState()`以及`CompareAndSetState()`等方法来进行操作。`state`可以表示任意状态。例如：`ReentrantLock`用它来表示所有者线程已经重复获取该锁的次数；`Semaphore`用它表示剩余的许可数量；`CountDownLatch`用它来表示计数器当前的值；`ReentrantReadWriteLock`用`state`的高16位表示读状态，也就是获取读锁的次数，低16位表示获取写锁的次数。<u>对于`AQS`来说，线程同步的关键就是对状态值`state`进行操作</u>。
 
 `AQS`是一个FIFO的双向队列，内部通过节点`head`和`tail`记录队首和队尾元素，队列元素的类型为`Node`。
 
@@ -60,6 +64,8 @@ try {
 `prev`表示当前节点的前驱节点（当节点从队尾加入同步队列时被设置），`next`表示当前节点的后继节点。
 
 #### 独占式同步状态的获取与释放
+
+##### 获取锁
 通过调用`AQS`的`acquire(int arg)`方法，可以以互斥的形式获取同步状态并忽略中断。`acquire(int arg)`方法的代码如下：
 ```Java
 public final void acquire(int arg) {
@@ -68,8 +74,65 @@ public final void acquire(int arg) {
         selfInterrupt();
 }
 ```
-这段代码主要完成了获取同步状态、构造节点、加入同步队列以及在同步队列中自旋等待的相关操作。主要逻辑是：首先调用`AQS`子类自定义的`tryAcquire(int arg)`方法获取同步状态，若获取失败，则构造同步节点（`Node.EXCLUSIVE`）并通过`addWaiter(Node node)`方法将该节点加入到同步队列的队尾，最后调用`acquireQueued(Node node, int arg)`方法使该节点以自旋的方式获取同步状态（只有前驱节点为头节点时才能够尝试获取同步状态）。如果获取不到则阻塞节点中的线程，而被阻塞线程的唤醒主要<u>依靠前驱节点的出队或阻塞线程被中断来实现</u>。
+这段代码主要完成了获取同步状态、构造节点、加入同步队列以及在同步队列中自旋等待的相关操作。主要逻辑是：首先调用`AQS`子类自定义的`tryAcquire(int arg)`方法获取同步状态，若获取失败，则构造同步节点（`Node.EXCLUSIVE`）并通过`addWaiter(Node node)`方法将该节点加入到同步队列的队尾，最后调用`acquireQueued(Node node, int arg)`方法使该节点以自旋的方式获取同步状态（只有前驱节点为头节点时才能够尝试获取同步状态）。如果获取不到则尝试阻塞节点中的线程，被阻塞线程的唤醒主要<u>依靠前驱节点的出队或阻塞线程被中断来实现</u>。`acquireQueued()`方法源码如下：
+```Java
+final boolean acquireQueued(final Node node, int arg) {
+boolean interrupted = false;
+try {
+    for (;;) {
+        final Node p = node.predecessor();
+        if (p == head && tryAcquire(arg)) {
+            setHead(node);
+            p.next = null; // help GC
+            return interrupted;
+        }
+        // 判断获取锁失败后是否阻塞线程
+        if (shouldParkAfterFailedAcquire(p, node))
+            interrupted |= parkAndCheckInterrupt();
+    }
+} catch (Throwable t) {
+    cancelAcquire(node);
+    if (interrupted)
+        selfInterrupt();
+    throw t;
+}
+}
+```
+当获取锁失败后，`shouldParkAfterFailedAcquire()` 方法会决定是否挂起当前线程，方法的实现如下：
+```Java
+private static boolean shouldParkAfterFailedAcquire(Node pred, Node node) {
+    int ws = pred.waitStatus;
+    if (ws == Node.SIGNAL)
+        /*
+            * This node has already set status asking a release
+            * to signal it, so it can safely park.
+            */
+        return true;
+    if (ws > 0) {
+        /*
+            * Predecessor was cancelled. Skip over predecessors and
+            * indicate retry.
+            */
+        do {
+            node.prev = pred = pred.prev;
+        } while (pred.waitStatus > 0);
+        pred.next = node;
+    } else {
+        /*
+            * waitStatus must be 0 or PROPAGATE.  Indicate that we
+            * need a signal, but don't park yet.  Caller will need to
+            * retry to make sure it cannot acquire before parking.
+            */
+        pred.compareAndSetWaitStatus(ws, Node.SIGNAL);
+    }
+    return false;
+}
+```
+从上面的代码中可以看出，线程被挂起的前提条件是：前驱节点的状态为 `SIGNAL`，`SIGNAL` 状态的含义是后继节点处于等待状态，当前节点释放锁后将会唤醒后继节点。
 
+整个加锁的流程到这里就已经走完了，最后的情况是：没有拿到锁的线程会在队列中被挂起，直到拥有锁的线程释放锁之后，才会去唤醒其他的线程去获取锁资源。
+
+##### 释放锁
 释放同步状态则是通过`release(int arg)`方法来完成的：
 ```Java
 public final boolean release(int arg) {
@@ -85,6 +148,8 @@ public final boolean release(int arg) {
 这段代码执行时，会释放同步状态并唤醒后继节点（后继节点成为`head`节点，继而重新尝试获取同步状态）中的线程，具体唤醒等待线程时通过`unparkSuccessor(Node node)`方法来完成的，它调用了`LockSupport`的`unpark(Thread thread)`方法。
 
 #### 共享式同步状态获取与释放
+
+##### 获取锁
 共享式获取同步状态与独占式获取最主要的区别在于<u>同一时刻是否能有多个线程同时获取到同步状态</u>。通过调用`AQS`的`acquireShared(int arg)`方法可以以共享的方式获取同步状态，该方法的代码如下：
 ```Java
 public final void acquireShared(int arg) {
@@ -120,6 +185,7 @@ private void doAcquireShared(int arg) {
 ```
 在`acquireShared(int arg)`方法中，调用的`tryAcquireShared(int arg)`返回值若不小于0，则表示获取同步状态成功。若获取失败，就进入`doAcquireShared(int arg)`方法自旋，如果当前节点的前驱为`head`节点，再次尝试获取同步状态，获取成功便退出自旋，否则继续尝试。
 
+##### 释放锁
 同步状态的释放是通过`releaseShared(int arg)`方法来完成的：
 ```Java
 public final boolean releaseShared(int arg) {
@@ -152,12 +218,13 @@ private void doReleaseShared() {
 不同于`release(int arg)`方法，`releaseShared(int arg)`方法会唤醒后继节点并确保释放操作向后传播。
 
 ## ReentrantLock
-`ReentrantLock`支持一个线程对资源重复加锁，还支持获取锁是的公平与非公平性选择。
+`ReentrantLock`允许一个线程对资源重复加锁，还支持设置锁的公平性。
 
 `synchronized`关键字本是是支持重入的（隐式的），而`ReentrantLock`的重入需要显式进行，即调用`lock()`方法。
 
 ### 重入
 **重入**是指任意线程在获取锁之后能够再次获取该锁而不会被锁阻塞。这一特性的实现需要解决以下两个问题：
+
 1. 线程再次获取同一个锁。这个时候需要锁去识别线程是否为当前拥有锁的线程，如果是，则再次获取成功，完成重入。
 2. 锁的最终释放。需要保证线程重复获取n次锁并释放n次锁之后，其它线程能够获取到该锁。
 
@@ -166,7 +233,69 @@ private void doReleaseShared() {
 ### 锁的公平性
 在`ReentrantLock`的构造函数中提供了一个`fair`参数，用来指定所创建的锁是否公平，默认创建一个非公平的锁。在公平的锁上，线程将按照它们发出请求的顺序来获得锁，但在非公平的锁上，是允许“插队”的：当一个线程请求非公平的锁时，如果在发出请求的同时该锁的状态变为可用，那么这个线程将跳过队列中的所有等待线程并获得这个锁。
 
-在激烈竞争的情况下，非公平锁的性能高于公平锁的一个原因是：<u>在恢复一个被挂起的线程与该线程真正开始运行之间存在着严重的延迟，而使用非公平锁减少了线程上下文切换的次数</u>。
+在激烈竞争的情况下，非公平锁的性能高于公平锁的一个原因是：<u>在恢复一个被挂起的线程与该线程真正开始运行之间存在着严重的延迟，而使用非公平锁减少了线程上下文切换的次数</u>。因此，`ReentrantLock`默认采用非公平锁：
+```Java
+public ReentrantLock() {
+    sync = new NonfairSync();
+}
+```
+如果使用者希望使用基于公平锁的`ReentrantLock`，可以使用带参数的构造函数：
+```Java
+public ReentrantLock(boolean fair) {
+    sync = fair ? new FairSync() : new NonfairSync();
+}
+```
+
+`ReentrantLock` 中的 `lock()` 实现为 `sync.acquire(1)`。`acquire()` 方法是 `Sync` 类从 `AbstractQueuedSynchronizer` 继承来的，上文中已经提到过其具体实现。`tryAcquire()` 方法尝试以独占的方式获取锁，如果获取锁失败，则把线程加入到阻塞队列中，下面来看 `tryAcquire()` 在 `FariSync` 和 `NonfairSync` 中的具体实现。`FairSync` 中的 `tryAcquire()` 方式实现为：
+```Java
+protected final boolean tryAcquire(int acquires) {
+    final Thread current = Thread.currentThread();
+    int c = getState();
+    if (c == 0) {
+        if (!hasQueuedPredecessors() &&
+            compareAndSetState(0, acquires)) {
+            setExclusiveOwnerThread(current);
+            return true;
+        }
+    }
+    else if (current == getExclusiveOwnerThread()) {
+        int nextc = c + acquires;
+        if (nextc < 0)
+            throw new Error("Maximum lock count exceeded");
+        setState(nextc);
+        return true;
+    }
+    return false;
+}
+```
+而 `NonfairSync` 中的实现则及其简单：
+```Java
+protected final boolean tryAcquire(int acquires) {
+    return nonfairTryAcquire(acquires);
+}
+```
+`nonfairTryAcquire()` 方法的实现位于抽象类 `Sync` 中，其具体内容为：
+```Java
+final boolean nonfairTryAcquire(int acquires) {
+    final Thread current = Thread.currentThread();
+    int c = getState();
+    if (c == 0) {
+        if (compareAndSetState(0, acquires)) {
+            setExclusiveOwnerThread(current);
+            return true;
+        }
+    }
+    else if (current == getExclusiveOwnerThread()) {
+        int nextc = c + acquires;
+        if (nextc < 0) // overflow
+            throw new Error("Maximum lock count exceeded");
+        setState(nextc);
+        return true;
+    }
+    return false;
+}
+```
+对比 `FairSync` 可以发现，`FairSync` 中的 `tryAcquire()` 方法仅多了一行：`!hasQueuedPredecessors()`。`hasQueuedPredecessor()` 方法用来查看队列中是否有比当前线程等待时间更久的线程，如果没有，就尝试一下是否能获取到锁，如果获取成功，则标记锁为已占用。
 
 ## ReadWriteLock
 ReadWriteLock的接口定义如下：
