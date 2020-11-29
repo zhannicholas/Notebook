@@ -1,10 +1,10 @@
-# `Synchronized`关键字
-Java中的每个对象都有一个与之相关联的`monitor`，线程可以其上进行加锁或释放已获得的锁，任何时候只有一个线程能够获得这个锁。
+# Synchronization
+Java语言提供了多种线程间通信机制（同步、while轮询、等待/通知、管道等等），其中最基础的通信方式就是**同步（synchronization）**。Java中的同步是通过`monitor`来实现的，每个Java对象都有一个与之相关联的`monitor`，线程可以在其上进行加锁和释放锁的操作。同一时刻只能有一个线程持有某个`monitor`的锁，任何其它尝试给该`monitor`加锁的线程在获得锁之前都会被阻塞。一个线程可以多次给某个`monitor`加锁，这就是锁的重入，多次加锁对应着多次解锁，因为每次`unlock`操作只会消除一次`lock`的效应。
 
-Java提供了一种内置的锁机制来支持原子性：同步代码块(Synchronized Block)。同步代码块包括两个部分：作为锁的对象引用和由这个锁保护的代码块。
+## `Synchronized`关键字
+Java提供了一种内置的锁机制来支持原子性：同步代码块(Synchronized Block)。同步代码块就是用`synchronized`关键字修饰的代码块，它包括两个部分：作为锁的对象引用和由这个锁保护的代码块。
 
-用关键字`synchronized`修饰的方法就是一种横跨整个方法体的同步代码块，其中该同步代码块的所就是方法调用所在的对象。
-静态的`synchronized`方法以<u>`Class`对象</u>作为锁：
+用关键字`synchronized`修饰的方法是一种横跨整个方法体的同步代码块，其中该同步代码块的锁就是和该方法相关的对象（方法执行期间`this`关键字所代表的对象）。静态`synchronized`方法以<u>`Class`对象</u>作为锁：
 ```Java
 static synchronized void staticMethod() {
 	// do something
@@ -66,9 +66,52 @@ HotSpot虚拟机对象的对象头部分包含两类信息：
 ### 重量级锁
 当锁升级为重量级锁时，Mark Word存储的时指向重量级锁的指针，等待的线程会进入阻塞状态。
 
-### 总结
+### 锁升级小结
 偏向锁通过比对Mark Word来解决加锁问题，避免CAS操作；轻量级锁通过CAS操作和自旋解决加锁问题，避免线程阻塞和唤醒带来的性能损耗；重量级锁阻塞拥有锁的线程以外的所有线程。
+
+## 从JVM视角看同步
+JVM中的同步操作是通过`monitor`的进入与退出来实现的。其实现方式又可分为显式（通过使用`monitorenter`和`monitorexit`指令）和隐式（通过方法的调用与返回指令）两种。根据被修饰的代码块的形式不同，`synchronized`关键字的使用可以分为两种情况：同步方法（`synchronized`修饰的是静态方法或实例方法）和同步语句（`synchronized`修饰的是一个代码块）。
+
+### 同步方法
+方法级别的同步操作是隐式实现的，不涉及`monitorenter`和`monitorexit`指令的使用，同步就是方法调用与返回的一部分。在运行时常量池中的`method_info`结构中，有一个叫做`ACC_SYNCHRONIZED`的标志位。方法调用指令会去检查这个标志位，当一个设置了`ACC_SYNCHRONIZED`的方法被调用时，执行线程会先进入`monitor`，然后调用方法本身，最后不管方法是否正常执行完成都会退出`monitor`。在执行线程拥有`monitor`的时间段内，其它线程是不可能再进入该`monitor`的。
+
+### 同步代码块
+下面是取自 JVM 11 规范中给出的一个例子。同步代码块
+```java
+void onlyMe(Foo f) {
+    synchronized(f) {
+        doSomething();
+    }
+}
+```
+会被编译成以下字节码：
+
+```class
+Method void onlyMe(Foo)
+0   aload_1             // Push f
+1   dup                 // Duplicate it on the stack
+2   astore_2            // Store duplicate in local variable 2
+3   monitorenter        // Enter the monitor associated with f
+4   aload_0             // Holding the monitor, pass this and...
+5   invokevirtual #5    // ...call Example.doSomething()V
+8   aload_2             // Push local variable 2 (f)
+9   monitorexit         // Exit the monitor associated with f
+10  goto 18             // Complete the method normally
+13  astore_3            // In case of any throw, end up here
+14  aload_2             // Push local variable 2 (f)
+15  monitorexit         // Be sure to exit the monitor!
+16  aload_3             // Push thrown value...
+17  athrow              // ...and rethrow value to the invoker
+18  return              // Return in the normal case
+Exception table:
+From    To      Target      Type
+4       10      13          any
+13      16      13          any
+```
+不管方法正常退出还是异常退出，编译器都会确保每条`monitorenter`指令都有一条对应的`monitorexit`被执行。
 
 ## 参考资料
 1. 方腾飞, 魏鹏, 程晓明. Java并发编程的艺术. 机械工业出版社, 2015.
-2. 美团技术团队. [不可不说的Java“锁”事](https://tech.meituan.com/2018/11/15/java-lock.html). 
+2. 美团技术团队. [不可不说的Java“锁”事](https://tech.meituan.com/2018/11/15/java-lock.html).
+3. [Intrinsic Locks and Synchronization](https://docs.oracle.com/javase/tutorial/essential/concurrency/locksync.html).
+4. [The Java® Virtual Machine Specification (Java SE 11 Edition)](https://docs.oracle.com/javase/specs/jvms/se11/html/jvms-3.html#jvms-3.14).

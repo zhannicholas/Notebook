@@ -49,7 +49,7 @@
     * [并发](JavaSE/Concurrency/README.md)
         * [线程](JavaSE/Concurrency/Thread.md)
         * [线程池](JavaSE/Concurrency/ThreadPool.md)
-        * [synchronized关键字](JavaSE/Concurrency/Synchronized.md)
+        * [synchronization](JavaSE/Concurrency/Synchronization.md)
         * [Locks](JavaSE/Concurrency/Locks.md)
     * [Nested Classes](JavaSE/NestedClasses.md)
     * [反射与代理](JavaSE/ReflectionAndProxy/README.md)
