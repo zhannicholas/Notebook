@@ -1,7 +1,57 @@
 # Locks
-> 文章中涉及的源代码摘自OpenJdk 11。
+> 文章中涉及的源代码摘自 OpenJdk 11。
 
-`Lock`接口中定义了一组抽象的锁操作。与内置加锁机制不同的是，`Lock`提供了一种无条件的、可轮询的、定时的以及可中断的锁获取操作，所有加锁和解锁的方法都是显式的。`Lock`接口的定义如下：
+## 乐观锁与悲观锁
+乐观锁与悲观锁是一种广义上的概念，体现了我们看待线程同步的不同角度。
+
+### 乐观锁
+乐观锁采用的思想是：**冲突检测**。例如：如果 A 和 B 同时编辑同一份文件，使用乐观锁策略， A 和 B 都能得到文件的一份拷贝并可以自由的编辑。假设 A 先完成工作，那么他可以毫无困难的更新他的修改。而当 B 在 A 提交之后完成工作并向提交他的修改时，并发控制策略将会起作用，如果检测到冲突，B 的提交将会被拒绝。
+
+乐观锁认为锁的持有者在使用数据的过程中不会有别的线程修改数据，所以不会添加锁，只有在提交数据时才会进行检测。Java 中的乐观锁大部分是通过 CAS (Compare And Swap) 实现的。CAS 是一种无锁算法，用来将某一内存地址的值从一个状态更新到另一个状态。CAS 操作包含三个参数：内存地址、预期原值和新值。如果内存地址的值和预期的原值相等的话，那么就可以把该位置的值更新为新值，否则不做任何修改。例如， `AtomicInteger` 类中的 `compareAndSet()` 方法：
+```Java
+public final boolean compareAndSet(int expectedValue, int newValue) {
+    return U.compareAndSetInt(this, VALUE, expectedValue, newValue);
+}
+```
+
+CAS 虽然高效，但是它存在一个问题：在其调用期间，目标内存地址的值改变了数次，但该地址的当前值却有可能与调用者之前获取到的值相等，这在某些情况下是有问题的。也就是说，CAS 无法探测到“某个值被修改，然后再被改回原值”的情况，这就是所谓的  **ABA 问题**。ABA 问题的常见处理方式是添加版本号，线程每次修改值之后就更新版本号，JDK 中的 `AtomicStampedReference` 类就是一个典型的例子，它内部维护了一个“版本号” Stamp，每次在比较时既比较当前值又比较版本号，这样就解决了 ABA 问题。
+```Java
+public class AtomicStampedReference<V> {
+
+    private static class Pair<T> {
+        final T reference;
+        final int stamp;
+        private Pair(T reference, int stamp) {
+            this.reference = reference;
+            this.stamp = stamp;
+        }
+        static <T> Pair<T> of(T reference, int stamp) {
+            return new Pair<T>(reference, stamp);
+        }
+    }
+
+    public boolean compareAndSet(V   expectedReference,
+                                 V   newReference,
+                                 int expectedStamp,
+                                 int newStamp) {
+        Pair<V> current = pair;
+        return
+            expectedReference == current.reference &&
+            expectedStamp == current.stamp &&
+            ((newReference == current.reference &&
+              newStamp == current.stamp) ||
+             casPair(current, Pair.of(newReference, newStamp)));
+    }
+}
+```
+
+### 悲观锁
+悲观锁采用的思想是：**冲突避免**。例如：如果 A 和 B 都想编辑同一份文件，使用悲观锁策略，若 A 先获得文件的编辑权，那么 B 就不能对文件进行编辑了。只有当 A 编辑完成并提交之后，B 才能对该文件进行操作。
+
+悲观锁是比较保守的，它认为在自己使用数据时会有别的线程来修改数据，因此在获取数据时会先加锁，确保数据不会被其它线程修改。Java 中，`synchronized` 和 `Lock` 的实现类采用的都是悲观锁策略。
+
+## `Lock`接口
+`Lock` 接口中定义了一组抽象的锁操作。与内置加锁机制不同的是，`Lock` 提供了一种无条件的、可轮询的、定时的以及可中断的锁获取操作，所有加锁和解锁的方法都是显式的。`Lock` 接口的定义如下：
 ```Java
 public interface Lock {
 	void lock();
@@ -341,3 +391,4 @@ public interface Condition {
 ## 参考资料
 1. Brian Goetz, Tim Peierls, Joshua Bloch, Joseph Bowbeer, David Holmes, and Doug Lea. <i>Java Concurrency in Practice</i>. Addison-Wesley Professional, 2006.
 2. 方腾飞, 魏鹏, 程晓明. Java并发编程的艺术. 机械工业出版社, 2015.
+3. Martin Fowler. <i>Patterns of Enterprise Application Architecture</i>. Addison-Wesley Professional, 2002.
