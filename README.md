@@ -1,3 +1,7 @@
 # Introduction
 
-This is my personal notebook, my knowledge base.
+My Notebook.
+
+## License
+
+[CC BY-NC-SA 4.0](http://creativecommons.org/licenses/by-nc-sa/4.0/)

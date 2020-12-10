@@ -87,3 +87,5 @@
         * [安全](ReadingNotes/ModernOperatingSystems/Security.md)
     * [Data Structures & Algorithms in Java](ReadingNotes/DataStructuresAndAlgorithmsInJava/README.md)
     * [Design Concepts for Engineers](ReadingNotes/DesignConceptsForEngineers/README.md)
+    * [SICP in Python](ReadingNotes/SICP_in_Python/README.md)
+        * [Building Abstractions with Functions](ReadingNotes/SICP_in_Python/BuildingAbstractionsWithFunctions.md)
